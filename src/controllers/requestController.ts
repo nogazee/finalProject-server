@@ -23,7 +23,7 @@ export class RequestController {
       return res.status(StatusCodes.CREATED).json({ request });
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to create request.",
       });
     }
@@ -38,14 +38,14 @@ export class RequestController {
       if (!request) {
         return res
           .status(StatusCodes.NOT_FOUND)
-          .json({ error: "Request not found." });
+          .json({ message: "Request not found." });
       }
 
       await request.save();
       res.json({ request });
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error:
+        message:
           error instanceof Error
             ? error.message
             : "Failed to update request status.",
@@ -65,7 +65,7 @@ export class RequestController {
       res.json({ requests, documentCount });
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to fetch requests.",
       });
     }
@@ -74,11 +74,13 @@ export class RequestController {
   // GET REQUESTS
   static async getRequests(req: Request, res: Response) {
     try {
-      const {requests, documentCount} = await RequestService.getRequests(req.query);
+      const { requests, documentCount } = await RequestService.getRequests(
+        req.query,
+      );
       res.json({ requests, documentCount });
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to fetch requests.",
       });
     }

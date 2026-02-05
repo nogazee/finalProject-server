@@ -26,11 +26,13 @@ export class UserController {
         error instanceof Error &&
         error.message === "A user with this email already exists."
       ) {
-        return res.status(StatusCodes.CONFLICT).json({ error: error.message });
+        return res
+          .status(StatusCodes.CONFLICT)
+          .json({ message: error.message });
       }
 
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to create user.",
       });
     }
@@ -58,14 +60,14 @@ export class UserController {
       if (!user) {
         return res
           .status(StatusCodes.NOT_FOUND)
-          .json({ error: "User not found." });
+          .json({ message: "User not found." });
       }
 
       await user.save();
       res.json({ user });
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to update user.",
       });
     }
@@ -84,10 +86,10 @@ export class UserController {
       if (error instanceof Error && error.message === "Invalid credentials") {
         return res
           .status(StatusCodes.BAD_REQUEST)
-          .json({ error: error.message });
+          .json({ message: error.message });
       }
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error: error instanceof Error ? error.message : "Failed to login.",
+        message: error instanceof Error ? error.message : "Failed to login.",
       });
     }
   }
@@ -103,7 +105,7 @@ export class UserController {
       res.send();
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error: error instanceof Error ? error.message : "Failed to logout.",
+        message: error instanceof Error ? error.message : "Failed to logout.",
       });
     }
   }

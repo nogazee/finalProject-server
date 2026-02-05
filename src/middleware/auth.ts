@@ -27,7 +27,7 @@ const auth = async (req: IUserRequest, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     res.status(StatusCodes.UNAUTHORIZED).json({
-      error: error instanceof Error ? error.message : "Please authenticate.",
+      message: error instanceof Error ? error.message : "Please authenticate.",
     });
   }
 };
@@ -35,7 +35,7 @@ const auth = async (req: IUserRequest, res: Response, next: NextFunction) => {
 export const adminPermission = (
   req: IUserRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (req.user!.role === "USER") {
